@@ -34,8 +34,18 @@ export class AppComponent {
   hourly = signal<HourlyPoint[]>([]);
 
   constructor() {
-    this.tryGeolocOnInit();
-    this.geo.onGranted(() => this.tryGeolocOnInit());
+    const last = localStorage.getItem('last');
+    if (last?.startsWith('q:')) {
+      this.query = last.slice(2);
+      this.onSearch();
+    } else if (last?.startsWith('geo:')) {
+      const [lat, lon] = last.slice(4).split(',').map(Number);
+      if (!Number.isNaN(lat) && !Number.isNaN(lon))
+        this.fetchByCoords(lat, lon);
+      else this.tryGeolocOnInit();
+    } else {
+      this.tryGeolocOnInit();
+    }
   }
 
   onType() {
@@ -44,7 +54,14 @@ export class AppComponent {
 
   toggleUnit() {
     this.units.toggle();
-    if (this.current()) this.onSearch();
+    const cur = this.current();
+    if (cur) {
+      this.fetchByCoords(cur.lat, cur.lon);
+    } else if ((this.query || '').trim()) {
+      this.onSearch();
+    } else {
+      this.tryGeolocOnInit();
+    }
   }
 
   iconUrl(code: string) {
@@ -87,6 +104,7 @@ export class AppComponent {
     obs.subscribe({
       next: (cw) => {
         this.current.set(cw);
+        localStorage.setItem('last', 'q:' + q);
         this.api.getAQI(cw.lat, cw.lon).subscribe((aqi) => {
           const cur = this.current();
           if (cur) this.current.set({ ...cur, aqi });
@@ -139,6 +157,7 @@ export class AppComponent {
     }).subscribe({
       next: ({ current, forecast }) => {
         this.current.set(current);
+        localStorage.setItem('last', `geo:${lat},${lon}`);
         this.api.getAQI(current.lat, current.lon).subscribe((aqi) => {
           const cur = this.current();
           if (cur) this.current.set({ ...cur, aqi });
