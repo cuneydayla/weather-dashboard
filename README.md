@@ -1,27 +1,33 @@
-# WeatherDashboard
+# Interactive Weather Dashboard – Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+This is a coding challenge project for Doktar Technologies.
 
-## Development server
+## 🔍 Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Search weather by city or zip code
+- Current conditions, 5-day forecast, 24h hourly data
+- Geolocation-based weather on first load
+- Celsius/Fahrenheit toggle
+- Dynamic background by weather condition
+- Air Quality Index (AQI) included
+- Responsive & user-friendly UI
+- Deployed via GitHub Actions to Azure Static Web Apps
 
-## Code scaffolding
+## 🚀 Live URL
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+[https://zealous-hill-09a4d861e.1.azurestaticapps.net](https://zealous-hill-09a4d861e.1.azurestaticapps.net)
 
-## Build
+## 🛠️ How to Run Locally
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 🔐 Environment: OpenWeatherMap API Key
 
-## Running unit tests
+To run the app locally, you need an OpenWeatherMap API key.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Sign up and get a free API key at https://openweathermap.org/api
+2. Paste your API key inside environment.ts
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm install
+npm start
+```
