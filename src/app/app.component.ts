@@ -34,7 +34,8 @@ export class AppComponent {
   hourly = signal<HourlyPoint[]>([]);
 
   constructor() {
-    this.useGeoloc(true);
+    this.tryGeolocOnInit();
+    this.geo.onGranted(() => this.tryGeolocOnInit());
   }
 
   onType() {
@@ -51,16 +52,21 @@ export class AppComponent {
   }
 
   useGeoloc(silent = false) {
-    this.query = '';
-    this.geo.requestOnce();
-    setTimeout(() => {
-      const c = this.geo.coords();
-      if (!c) {
-        if (!silent) this.error.set('Location not available.');
-        return;
-      }
+    this.tryGeolocOnInit(silent);
+  }
+
+  async tryGeolocOnInit(silent = true) {
+    this.loading.set(true);
+    this.error.set('');
+    try {
+      const c = await this.geo.getOnce();
       this.fetchByCoords(c.lat, c.lon);
-    }, 300);
+    } catch (e: any) {
+      this.loading.set(false);
+      if (!silent && e?.code !== 1) {
+        this.error.set(this.msg(e));
+      }
+    }
   }
 
   onSearch() {

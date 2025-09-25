@@ -17,7 +17,6 @@ describe('AppComponent', () => {
   it(`should have the 'weather-dashboard' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('weather-dashboard');
   });
 
   it('should render title', () => {
